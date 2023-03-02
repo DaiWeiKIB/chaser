@@ -1,0 +1,167 @@
+configfile: "config.yaml"
+
+rule all:
+    input:
+        PPS1="./polish/PPS1.sam",
+        PPB1="./polish/PPB1.bam",
+        PP1="./polish/PP1.fasta",
+        PPS2="./polish/PPS2.sam",
+        PPB2="./polish/PPB2.bam",
+        PP2="./polish/Final.fasta"
+
+rule blast:
+    input:
+        config["Long_Reads_dir"]
+    output:
+        "filtered.seq"
+    params:
+        t=config["Number_of_threads"] 
+    threads: config["Number_of_threads"]
+    log: "logs/blast.log" 
+    shell:
+        "makeblastdb -in {input} -out {input} -dbtype nucl && blastn -query ~/.GetOrganelle/LabelDatabase/embplant_mt.fasta -db {input} -evalue 1e-5 -out {output} -outfmt '6 sseqid' -num_threads '{params.t}' -qcov_hsp_perc 80 -perc_identity 80"
+
+rule seq_exextract:
+    input:
+        "filtered.seq",
+        config["Long_Reads_dir"]
+    output:
+        "mt_draft_candidate_dataset_of_long_reads.fasta"
+    shell:
+        "seqkit grep -f {input} -o {output}"
+
+rule long_reads_assemble_draft_overlap:
+    input:
+        "mt_draft_candidate_dataset_of_long_reads.fasta",
+        "mt_draft_candidate_dataset_of_long_reads.fasta"
+    output:
+        "./long_reads_assemble_draft/lrol.paf"
+    params:
+        t=config["Number_of_threads"],
+        lrp=config["Long_reads_platform"],
+    threads: config["Number_of_threads"] 
+    shell:
+        "minimap2 -t {params.t} -x ava-{params.lrp} {input} > {output}"
+
+rule long_reads_assemble_draft:
+    input:
+        "mt_draft_candidate_dataset_of_long_reads.fasta",
+        "./long_reads_assemble_draft/lrol.paf"
+    output:
+        gfa = "./long_reads_assemble_draft/lrol.gfa",
+        LRAD = "./long_reads_assemble_draft/assembly.fasta",
+    threads: config["Number_of_threads"] 
+    shell:
+        "miniasm -f {input} - > '{output.gfa}' && gfatools gfa2fa '{output.gfa}' - > '{output.LRAD}'"
+
+rule illumina_mt_filter:
+    input:
+        fastq1 = config["Short_reads_dir1"],
+        fastq2 = config["Short_reads_dir2"],
+        LRAD = "./long_reads_assemble_draft/assembly.fasta",
+    output:    
+        LSmap=temp("./illumina_mt_filter/illumina_mt_filter.sam"),
+        sort="./illumina_mt_filter/illumina_mt_filter.bam",
+        filter1="./illumina_mt_filter/illumina_mt_filter_1.fastq",
+        filter2="./illumina_mt_filter/illumina_mt_filter_2.fastq",
+        PTA = "./pt/embplant_pt.K127.complete.graph1.1.path_sequence.fasta",
+    params:
+        t=config["Number_of_threads"],
+        m=config["Maximum_memory"],
+        PTA=directory("./pt"),        
+    threads: config["Number_of_threads"]
+    shell:
+        "bwa-mem2 index '{input.LRAD}' && bwa-mem2 mem -t '{params.t}' -o '{output.LSmap}' '{input.LRAD}' '{input.fastq1}' '{input.fastq2}' && samtools view -@ '{params.t}' -h -bS -F 12 '{output.LSmap}' | samtools sort -n -m '{params.m}' -@ '{params.t}' - > '{output.sort}' && samtools fastq -1 '{output.filter1}' -2 '{output.filter2}' '{output.sort}' && get_organelle_from_reads.py --continue -1 '{input.fastq1}' -2 '{input.fastq2}' -o '{params.PTA}' -R 15 -k 127 -F embplant_pt -t '{params.t}'"
+
+rule illumina_mt_pt_filter:
+    input:
+        filter1 = "./illumina_mt_filter/illumina_mt_filter_1.fastq",
+        filter2 = "./illumina_mt_filter/illumina_mt_filter_2.fastq",
+        PTA = "./pt/embplant_pt.K127.complete.graph1.1.path_sequence.fasta",
+    output:
+        ptmap=temp("./illumina_mt_filter/illumina_mt_pt_filter.sam"),
+        ptsort="./illumina_mt_filter/illumina_mt_pt_filter.bam",
+        pt_filter1="./illumina_mt_filter/illumina_mt_pt_filter_1.fastq",
+        pt_filter2="./illumina_mt_filter/illumina_mt_pt_filter_2.fastq",
+        MTSA="./mt_sa/embplant_mt.K127.scaffolds.graph1.1.path_sequence.fasta"
+    params:
+        t=config["Number_of_threads"],
+        m=config["Maximum_memory"],
+        SD=config["Seed_dir"],
+        MTSA=directory("./mt_sa")   
+    threads: config["Number_of_threads"]
+    shell:
+        "bwa-mem2 index '{input.PTA}' && bwa-mem2 mem -t '{params.t}' -o '{output.ptmap}' '{input.PTA}' '{input.filter1}' '{input.filter2}' && samtools view -@ '{params.t}' -h -bS -f 12 '{output.ptmap}' | samtools sort -n -m '{params.m}' -@ '{params.t}' - > '{output.ptsort}' && samtools fastq -1 '{output.pt_filter1}' -2 '{output.pt_filter2}' '{output.ptsort}' && get_organelle_from_reads.py --continue -1 '{output.pt_filter1}' -2 '{output.pt_filter2}' -o '{params.MTSA}' -R 30 -k 127 -F embplant_mt -t '{params.t}' -P 1000000 -w 105 -s '{params.SD}'"
+
+rule mtblast:
+    input:
+        MTSA="./mt_sa/embplant_mt.K127.scaffolds.graph1.1.path_sequence.fasta"
+    output:
+        "mt_candidate.seq"
+    params:
+        t=config["Number_of_threads"], 
+        LRD=config["Long_Reads_dir"],
+    threads: config["Number_of_threads"]
+    log: "logs/mtblast.log" 
+    shell:
+        "makeblastdb -in {input.MTSA} -out {input.MTSA} -dbtype nucl && blastn -query {input.MTSA} -db '{params.LRD}' -evalue 1e-5 -out {output} -outfmt '6 sseqid' -num_threads '{params.t}' -qcov_hsp_perc 80 -perc_identity 80"
+
+rule mt_seq_exextract:
+    input:
+        "mt_candidate.seq",
+        config["Long_Reads_dir"]
+    output:
+        "mt_candidate_dataset_of_long_reads.fasta"
+    shell:
+        "seqkit grep -f {input} -o {output}"
+
+rule long_reads_assemble:
+    input:
+        "mt_candidate_dataset_of_long_reads.fasta"
+    output:
+        LRA = "./long_reads_assemble/assembly.fasta"
+    params:
+        LRT=config["Long_reads_type"],
+        t=config["Number_of_threads"],
+        EGS=config["Estimated_genome_size"],
+    threads: config["Number_of_threads"] 
+    log: "logs/draft_flye.log" 
+    shell:
+        "flye '{params.LRT}' {input} --out-dir ./long_reads_assemble --genome-size '{params.EGS}' --threads '{params.t}'"
+
+rule long_reads_assemble_three_round_racon:
+    input:
+        LRA = "./long_reads_assemble/assembly.fasta",
+        CDS = "mt_candidate_dataset_of_long_reads.fasta"
+    output:
+        P1O=temp("./polish/P1.paf"),
+        RP1="./polish/P1.fasta",
+        P2O=temp("./polish/P2.paf"),
+        RP2="./polish/P2.fasta",
+        P3O=temp("./polish/P3.paf"),
+        RP3="./polish/P3.fasta",
+    params:
+        t=config["Number_of_threads"],
+    threads: config["Number_of_threads"] 
+    shell:
+        "minimap2 -t {params.t} {input.LRA} {input.CDS} > {output.P1O} && racon -t {params.t} {input.CDS} {output.P1O} {input.LRA} > {output.RP1} && minimap2 -t {params.t} {output.RP1} {input.CDS} > {output.P2O} && racon -t {params.t} {input.CDS} {output.P2O} {output.RP1}  > {output.RP2} && minimap2 -t {params.t} {output.RP2} {input.CDS} > {output.P3O} && racon -t {params.t} {input.CDS} {output.P3O} {output.RP2} > {output.RP3}"
+
+rule long_reads_assemble_two_round_pilon:
+    input:
+        RP3="./polish/P3.fasta",
+        pt_filter1="./illumina_mt_filter/illumina_mt_pt_filter_1.fastq",
+        pt_filter2="./illumina_mt_filter/illumina_mt_pt_filter_2.fastq",        
+    output:
+        PPS1=temp("./polish/PPS1.sam"),
+        PPB1=temp("./polish/PPB1.bam"),
+        PP1="./polish/PP1.fasta",
+        PPS2=temp("./polish/PPS2.sam"),
+        PPB2=temp("./polish/PPB2.bam"),
+        PP2="./polish/Final.fasta",
+    params:
+        t=config["Number_of_threads"],
+        m=config["Maximum_memory"],
+        PP=directory("./polish"),   
+    threads: config["Number_of_threads"] 
+    shell:  
+        "bwa-mem2 index {input.RP3} && bwa-mem2 mem -t {params.t} -o {output.PPS1} {input.RP3} {input.pt_filter1} {input.pt_filter2} && samtools view -@ {params.t} -h -bS -F 12 {output.PPS1} | samtools sort -m {params.m} -@ {params.t} -o {output.PPB1} && samtools index {output.PPB1} && pilon --genome {input.RP3} --frags {output.PPB1} --fix all --outdir {params.PP} --output PP1 && bwa-mem2 index {output.PP1} && bwa-mem2 mem -t {params.t} -o {output.PPS2} {output.PP1} {input.pt_filter1} {input.pt_filter2} && samtools view -@ {params.t} -h -bS -F 12 {output.PPS2} | samtools sort -m {params.m} -@ {params.t} -o {output.PPB2} && samtools index {output.PPB2} && pilon --genome {output.PP1} --frags {output.PPB2} --fix all --outdir {params.PP} --output Final --vcf"
