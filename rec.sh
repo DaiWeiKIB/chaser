@@ -11,6 +11,7 @@ seqkit split -i ./recreads/u200RR.fasta -o ./recreads
 seqkit split -i ./recreads/df200RR.fasta -o ./recreads 
 mkdir ./recreads/u200RR.fasta.split/_2
 mkdir ./recreads/df200RR.fasta.split/_2
+makeblastdb -in ./NC_011033.1_sequencing.fasta -out ./NC_011033.1_sequencing.fasta -dbtype nucl 
 
 for i in {8..79}  
 
