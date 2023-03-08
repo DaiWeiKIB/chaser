@@ -5,6 +5,7 @@ seqkit subseq --bed ./NC_011033.1_repeat.bed ./NC_011033.1.fasta -u 200 -d 200 -
 seqkit replace -p "(.+\s)" ./refreads/200.fasta > ./refreads/200R.fasta
 seqkit rename -n ./refreads/200R.fasta > ./refreads/200RR.fasta
 seqkit split -i ./refreads/200RR.fasta -o ./refreads 
+makeblastdb -in ./NC_011033.1_sequencing.fasta -out ./NC_011033.1_sequencing.fasta -dbtype nucl 
 
 mkdir ./refreads/seq
 
