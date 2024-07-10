@@ -13,7 +13,7 @@ Chaser
 
     wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/config.yaml  
     
-#Fill in the genome information to be assembled according to the comments in config.yaml  
+Fill in the genome information to be assembled according to the comments in **config.yaml**  
 
 ## Download the relevant process file to customize the script based on the comments  
 
