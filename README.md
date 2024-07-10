@@ -4,9 +4,9 @@
 ### Make sure that conda is deployed on your terminal before using it.  
 
 ## Download and deploy the conda environment synchronized with the development environment
-The software to be installed includes [minimap2](https://github.com/lh3/minimap2)  [samtools](http://www.htslib.org/)  [miniasm](https://github.com/lh3/miniasm/)  [GetOrganell](https://github.com/Kinggerm/GetOrganelle)  [flye](https://github.com/mikolmogorov/Flye)  [bwa-mem2](https://github.com/bwa-mem2/bwa-mem2)  [seqkit](https://github.com/shenwei356/seqkit)  [blast+](https://blast.ncbi.nlm.nih.gov/doc/blast-help/downloadblastdata.html)  [pilon](https://github.com/broadinstitute/pilon)  [racon](https://github.com/isovic/racon)
+The software will be installed include [minimap2](https://github.com/lh3/minimap2)  [samtools](http://www.htslib.org/)  [miniasm](https://github.com/lh3/miniasm/)  [GetOrganell](https://github.com/Kinggerm/GetOrganelle)  [flye](https://github.com/mikolmogorov/Flye)  [bwa-mem2](https://github.com/bwa-mem2/bwa-mem2)  [seqkit](https://github.com/shenwei356/seqkit)  [blast+](https://blast.ncbi.nlm.nih.gov/doc/blast-help/downloadblastdata.html)  [pilon](https://github.com/broadinstitute/pilon)  [racon](https://github.com/isovic/racon)
 
-Use the following commands to use conda resolve their dependency
+Use the following command use conda to resolve their dependency
 
     wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/chaser_env.yml    
     conda env create -f chaser_env.yml  
