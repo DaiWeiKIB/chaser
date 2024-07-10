@@ -5,7 +5,7 @@ Chaser
 
 ## Download and deploy the conda environment synchronized with the author and start  
     
-    wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/chaser_env.yml    #For mainland Chinese users utilize jsdelivr as a static resource server, as a stable and fast mirror source to access download  
+    wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/chaser_env.yml    
     conda env create -f chaser_env.yml  
     conda activate chaser  
 
