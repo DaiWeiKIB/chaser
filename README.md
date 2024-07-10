@@ -41,4 +41,5 @@ Fill in the genome information to be assembled according to the comments in **co
 
     snakemake -s chaser -c {number of threads}
 
-
+## Contact
+Please communicate me with email address: daiwei20@mails.ucas.ac.cn
