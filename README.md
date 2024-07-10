@@ -1,7 +1,7 @@
-Chaser
+**Chaser**
 -------------------------------------------------------------------------------------------------------------
-#### Chaser is a Conda-based snakemake script available for rapid and low-pollution plant mitochondrial genome assembly.  
-#### Make sure that conda is deployed on your terminal before using it.  
+### Chaser is a Conda-based snakemake script available for rapid and low-pollution plant mitochondrial genome assembly.  
+### Make sure that conda is deployed on your terminal before using it.  
 
 ## Download and deploy the conda environment synchronized with the author and start  
     
@@ -9,7 +9,7 @@ Chaser
     conda env create -f chaser_env.yml  
     conda activate chaser  
 
-## The default script configuration file can be obtained using the following command  
+    The default script configuration file can be obtained using the following command  
 
     wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/config.yaml  
     
