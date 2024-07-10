@@ -32,7 +32,7 @@ Fill in the genome information to be assembled according to the comments in **co
     Long_reads_type:
         --nano-raw    #Available options: --pacbio-raw (PacBio regular CLR reads <20% error) / --pacbio-corr(PacBio reads <3% error) / --pacbio-hifi (PacBio HiFi reads <1% error) / --nanoraw (ONT regular reads <20% error) / --nano-corr (ONT reads <3% error)/ --nano-hq (ONT high-quality reads <5% error)
     Estimated_genome_size:
-        0.5m    #estimated genome size given by the user in this field(According to the reference genome)
+        0.5m    #Estimated genome size given by the user in this field(According to the reference genome)
 ## Download the relevant process file to customize the script based on the comments  
 
     wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/chaser
