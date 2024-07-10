@@ -9,7 +9,7 @@
     conda env create -f chaser_env.yml  
     conda activate chaser  
 
-# The default script configuration file can be obtained using the following command  
+### The default script configuration file can be obtained using the following command  
 
     wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/config.yaml  
     
