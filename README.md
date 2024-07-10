@@ -26,7 +26,7 @@ Fill in the genome information to be assembled according to the comments in **co
     Maximum_memory:
         10G
     Seed_dir:
-        /home/daiwei/Oryza_sativa/NC_011033.1.fasta    #Mitochondrial genome data of related species were selected as seed
+        /home/daiwei/Oryza_sativa/NC_011033.1.fasta    #Mitochondrial genome data of related species could be selected as seed
     Long_reads_platform:
         ont    #Available options: ont(Oxford Nanopore Sequencing technology)/pb(Pacbio biosciences)
     Long_reads_type:
