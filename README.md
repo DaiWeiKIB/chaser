@@ -15,7 +15,11 @@ wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/chaser
 
 ## Start assembly  
 
-snakemake -s chaser -c {number of threads}
+
+    snakemake -s chaser -c {number of threads}
+
+
+
 
 
     conda install -c bioconda seqkit
