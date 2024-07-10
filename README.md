@@ -28,9 +28,9 @@ Fill in the genome information to be assembled according to the comments in **co
     Seed_dir:
         /home/daiwei/Oryza_sativa/NC_011033.1.fasta    #Mitochondrial genome data of related species could be selected as seed
     Long_reads_platform:
-        ont    #Available options: ont(Oxford Nanopore Sequencing technology)/pb(Pacbio biosciences)
+        ont    #Available options: ont(Oxford Nanopore Sequencing technology) / pb(Pacbio biosciences)
     Long_reads_type:
-        --nano-raw    #Available options: --pacbio-raw (PacBio regular CLR reads <20% error) / --pacbio-corr(PacBio reads <3% error) / --pacbio-hifi (PacBio HiFi reads <1% error) / --nanoraw (ONT regular reads <20% error) / --nano-corr (ONT reads <3% error)/ --nano-hq (ONT high-quality reads <5% error)
+        --nano-raw    #Available options: --pacbio-raw (PacBio regular CLR reads <20% error) / --pacbio-corr(PacBio reads <3% error) / --pacbio-hifi (PacBio HiFi reads <1% error) / --nanoraw (ONT regular reads <20% error) / --nano-corr (ONT reads <3% error)/ --nano-hq (ONT high-quality reads <5% error)
     Estimated_genome_size:
         0.5m    #estimated genome size given by the user in this field(According to the reference genome)
 ## Download the relevant process file to customize the script based on the comments  
