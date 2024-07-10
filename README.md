@@ -15,10 +15,10 @@ Chaser
     
 Fill in the genome information to be assembled according to the comments in **config.yaml**  
 
-    Long_Reads_dir:
-        /home/daiwei/Oryza_sativa/CRR306311.fasta
+    Long_reads_dir:
+        /home/daiwei/Oryza_sativa/CRR306311.fasta    #Directory path of single molecule sequencing data file path only with fasta format
     Short_reads_dir1:
-        /home/daiwei/Oryza_sativa/CRR306398_f1.fq.gz
+        /home/daiwei/Oryza_sativa/CRR306398_f1.fq.gz    #Directory path of Illumina sequencing data
     Short_reads_dir2:
         /home/daiwei/Oryza_sativa/CRR306398_r2.fq.gz
     Number_of_threads: 
@@ -26,13 +26,13 @@ Fill in the genome information to be assembled according to the comments in **co
     Maximum_memory:
         10G
     Seed_dir:
-        /home/daiwei/Oryza_sativa/NC_011033.1.fasta
+        /home/daiwei/Oryza_sativa/NC_011033.1.fasta    #Mitochondrial genome data of related species were selected as seed
     Long_reads_platform:
-        ont
+        ont    #Available options: ont(Oxford Nanopore Sequencing technology)/pb(Pacbio biosciences)
     Long_reads_type:
-        --nano-raw
+        --nano-raw    #Available options: --pacbio-raw (PacBio regular CLR reads <20% error) / --pacbio-corr(PacBio reads <3% error) / --pacbio-hifi (PacBio HiFi reads <1% error) / --nanoraw (ONT regular reads <20% error) / --nano-corr (ONT reads <3% error)/ --nano-hq (ONT high-quality reads <5% error)
     Estimated_genome_size:
-        0.5m 
+        0.5m    #estimated genome size given by the user in this field(According to the reference genome)
 ## Download the relevant process file to customize the script based on the comments  
 
     wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/chaser
