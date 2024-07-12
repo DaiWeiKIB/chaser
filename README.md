@@ -16,7 +16,7 @@ Use the following command use conda to resolve their dependency
 
     wget https://cdn.jsdelivr.net/gh/DaiWeiKIB/chaser@main/config.yaml  
     
-Fill in the genome information to be assembled according to the comments in **config.yaml**  
+Fill in the genome information according to the comments in **config.yaml**  
 
     Long_reads_dir:
         /home/daiwei/Oryza_sativa/CRR306311.fasta    #Directory path of single molecule sequencing data file path only with fasta format
