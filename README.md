@@ -47,7 +47,7 @@ Fill in the genome information according to the comments in **config.yaml**
     snakemake -s chaser -c {number of threads}
 ## Test data set
 
-The study was validated using publicly accessible illumina, nanopore, and Pacbio Hifi sequencing data. Arabidopsis thaliana and Oryza sativa were registered in the public databases of the China National Center for Bioinformation (CNCB) and the US National Center for Biotechnology Information (NCBI).
+This pipeline was validated using publicly accessible illumina, nanopore, and Pacbio Hifi sequencing data. Arabidopsis thaliana and Oryza sativa were registered in the public databases of the China National Center for Bioinformation (CNCB) and the US National Center for Biotechnology Information (NCBI).
 
 ![image](https://github.com/user-attachments/assets/41d3e9c7-2fc3-4d5f-b5a0-ffcea1ec0115)
 
