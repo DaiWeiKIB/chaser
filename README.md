@@ -45,6 +45,15 @@ Fill in the genome information according to the comments in **config.yaml**
 ## Start assembly  
 
     snakemake -s chaser -c {number of threads}
+## Test data set
 
+In this study, Illumina, Arabidopsis thaliana and Oryza sativa were registered in the public databases of China's National Bioinformation Center and the US National Biotechnology Information Center.
+The processes built by the Institute were tested with Nanopore and Pacbio Hifi sequencing data.
+![image](https://github.com/user-attachments/assets/41d3e9c7-2fc3-4d5f-b5a0-ffcea1ec0115)
+Due to the structural variability of the mitochondrial genome, the assembly presents realistic and reasonable results.
+![image](https://github.com/user-attachments/assets/5b7fc976-02c8-4f27-acfa-5104bac5180c)
+
+
+## Assembly result
 ## Contact
 Please communicate me with email address: daiwei20@mails.ucas.ac.cn
